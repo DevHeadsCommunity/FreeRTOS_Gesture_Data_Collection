@@ -14,6 +14,6 @@
 void MPU_Init();
 uint8_t MPU_Whoami();
 
-void MPU_Read_Accel();
+void MPU_Read_Accel(float *arr);
 
 #endif

@@ -34,8 +34,10 @@ void MPU_Init()
     MPU_WriteReg(MPU_REG_GYRO_CONFIG, 0x0U); // Setting Scale Range to 2g
 }
 
-void MPU_Read_Accel()
+void MPU_Read_Accel(float *arr)
 {
+    int16_t RAWX, RAWY, RAWZ;
+
     uint8_t reg = MPU_REG_ACCEL_XOUT_H;
     uint8_t AccelData[6];
 
@@ -45,4 +47,13 @@ void MPU_Read_Accel()
     I2C1_GenStart();
     I2C1_SendAddress(MPU_ADDRESS, 1);
     I2C1_MasterReceiveData(AccelData, 6);
+
+    // Processing RAW data
+    RAWX = (int16_t)(AccelData[0] << 8 | AccelData[1]);
+    RAWY = (int16_t)(AccelData[2] << 8 | AccelData[3]);
+    RAWZ = (int16_t)(AccelData[4] << 8 | AccelData[5]);
+
+    arr[0] = (float)(RAWX / 16384.0);
+    arr[1] = (float)(RAWY / 16384.0);
+    arr[2] = (float)(RAWZ / 16384.0);
 }

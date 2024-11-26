@@ -1,4 +1,4 @@
-
+#include <stdio.h>
 /*-------------FreeRTOS Includes--------------*/
 #include "FreeRTOS.h"
 #include "task.h"
@@ -12,20 +12,56 @@
 #include "i2c.h"
 #include "mpu6050.h"
 
+int __io_putchar(int ch)
+{
+    UART_SendChar(USART2, ch);
+    return ch;
+}
+
 void USART2_Config();
+
+float AccelDataArr[3];
+
+void pvAccelDataReading()
+{
+
+    for (;;)
+    {
+        MPU_Read_Accel(AccelDataArr);
+        printf("Ax: %.4f\n\rAy: %.4f\n\rAz: %.4f\n\n\r", AccelDataArr[0], AccelDataArr[1], AccelDataArr[2]);
+        vTaskDelay(500);
+    }
+}
 
 int main(void)
 {
-    char buffer[] = "Hello, From UART!\n";
     UART2_GPIO_Init();
     USART2_Config();
     I2C1_GPIO_Init();
     I2C1_Init();
-    // uint8_t res = MPU_Whoami();
-    // (void)res;
+    if (MPU_Whoami() == 0x68)
+    {
+        printf("MPU Connected Successfully.\n");
+    }
+    else
+    {
+        printf("Check Your Connections or Address.\n");
+    }
+
     MPU_Init();
-    MPU_Read_Accel();
-    UART_SendBuffer(USART2, (uint8_t *)buffer, sizeof(buffer));
+
+    if (xTaskCreate(pvAccelDataReading,
+                    "AccelDataReading",
+                    configMINIMAL_STACK_SIZE,
+                    NULL,
+                    configMAX_PRIORITIES - 1U,
+                    NULL) != pdPASS)
+    {
+        printf("Task Creation Failed!\n");
+    }
+
+    vTaskStartScheduler();
+
     for (;;)
     {
     }
