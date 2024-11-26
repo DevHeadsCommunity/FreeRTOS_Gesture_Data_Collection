@@ -112,7 +112,8 @@ void I2C1_MasterSendData(uint8_t *pBuffer, uint8_t len)
  */
 void I2C1_MasterReceiveData(uint8_t *pBuffer, uint8_t len)
 {
-    while (len--)
+    I2C1_SetACK();
+    while (len)
     {
         if (len == 1)
         {
@@ -122,6 +123,7 @@ void I2C1_MasterReceiveData(uint8_t *pBuffer, uint8_t len)
             ;
         *pBuffer = I2C1->DR;
         pBuffer++;
+        len--;
     }
     I2C1_GenStop();
 }
