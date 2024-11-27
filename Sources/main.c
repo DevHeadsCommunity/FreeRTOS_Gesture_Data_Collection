@@ -20,15 +20,15 @@ int __io_putchar(int ch)
 
 void USART2_Config();
 
-float AccelDataArr[3];
+float GyroDataArr[3];
 
 void pvAccelDataReading()
 {
 
     for (;;)
     {
-        MPU_Read_Accel(AccelDataArr);
-        printf("Ax: %.4f\n\rAy: %.4f\n\rAz: %.4f\n\n\r", AccelDataArr[0], AccelDataArr[1], AccelDataArr[2]);
+        MPU_Read_Gyro(GyroDataArr);
+        printf("      Gx: %.4f\n\r      Gy: %.4f\n\r      Gz: %.4f\n\n\r", GyroDataArr[0], GyroDataArr[1], GyroDataArr[2]);
         vTaskDelay(500);
     }
 }

@@ -10,10 +10,12 @@
 #define MPU_REG_GYRO_CONFIG 0x1BU
 #define MPU_REG_ACCEL_CONFIG 0x1CU
 #define MPU_REG_ACCEL_XOUT_H 0x3BU
+#define MPU_REG_GYRO_XOUT_H 0x43U
 
 void MPU_Init();
 uint8_t MPU_Whoami();
 
 void MPU_Read_Accel(float *arr);
+void MPU_Read_Gyro(float *arr);
 
 #endif

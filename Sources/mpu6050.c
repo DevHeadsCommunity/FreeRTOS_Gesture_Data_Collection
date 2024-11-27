@@ -57,3 +57,27 @@ void MPU_Read_Accel(float *arr)
     arr[1] = (float)(RAWY / 16384.0);
     arr[2] = (float)(RAWZ / 16384.0);
 }
+
+void MPU_Read_Gyro(float *arr)
+{
+    int16_t RawGyroX, RawGyroY, RawGyroZ;
+
+    uint8_t reg = MPU_REG_GYRO_XOUT_H;
+
+    uint8_t GyroData[6];
+
+    I2C1_GenStart();
+    I2C1_SendAddress(MPU_ADDRESS, 0);
+    I2C1_MasterSendData(&reg, 1);
+    I2C1_GenStart();
+    I2C1_SendAddress(MPU_ADDRESS, 1);
+    I2C1_MasterReceiveData(GyroData, 6);
+
+    RawGyroX = (int16_t)(GyroData[0] << 8 | GyroData[1]);
+    RawGyroY = (int16_t)(GyroData[2] << 8 | GyroData[3]);
+    RawGyroZ = (int16_t)(GyroData[4] << 8 | GyroData[5]);
+
+    arr[0] = (float)RawGyroX / 131.0;
+    arr[1] = (float)RawGyroY / 131.0;
+    arr[2] = (float)RawGyroZ / 131.0;
+}
