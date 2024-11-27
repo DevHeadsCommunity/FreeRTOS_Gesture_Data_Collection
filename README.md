@@ -82,7 +82,7 @@ This project collects motion data from an MPU-6050 sensor using an STM32 microco
 | 10             | 0.02   | 0.03   | 0.95   | 0.4      | 0.4      | -0.2     | Square |
 
 ---
-
+  
 ## **References**
 - [MPU-6050 Datasheet](https://invensense.tdk.com/products/motion-tracking/6-axis/mpu-6050/)
 - [STM32 FreeRTOS Guide](https://www.freertos.org/RTOS.html)
