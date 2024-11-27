@@ -12,26 +12,14 @@
 #include "i2c.h"
 #include "mpu6050.h"
 
-int __io_putchar(int ch)
-{
-    UART_SendChar(USART2, ch);
-    return ch;
-}
-
 void USART2_Config();
 
 float GyroDataArr[3];
+float AccelDataArr[3];
 
-void pvAccelDataReading()
-{
-
-    for (;;)
-    {
-        MPU_Read_Gyro(GyroDataArr);
-        printf("      Gx: %.4f\n\r      Gy: %.4f\n\r      Gz: %.4f\n\n\r", GyroDataArr[0], GyroDataArr[1], GyroDataArr[2]);
-        vTaskDelay(500);
-    }
-}
+void pvGyroDataReading();
+void pvAccelDataReading();
+void pvDataLogging();
 
 int main(void)
 {
@@ -50,8 +38,27 @@ int main(void)
 
     MPU_Init();
 
+    if (xTaskCreate(pvGyroDataReading,
+                    "pvGyroDataReading",
+                    configMINIMAL_STACK_SIZE,
+                    NULL,
+                    configMAX_PRIORITIES - 1U,
+                    NULL) != pdPASS)
+    {
+        printf("Task Creation Failed!\n");
+    }
+
     if (xTaskCreate(pvAccelDataReading,
                     "AccelDataReading",
+                    configMINIMAL_STACK_SIZE,
+                    NULL,
+                    configMAX_PRIORITIES - 1U,
+                    NULL) != pdPASS)
+    {
+        printf("Task Creation Failed!\n");
+    }
+    if (xTaskCreate(pvDataLogging,
+                    "pvDataLogging",
                     configMINIMAL_STACK_SIZE,
                     NULL,
                     configMAX_PRIORITIES - 1U,
@@ -86,4 +93,40 @@ void USART2_Config()
     uart2.Init.Parity = UART_PARITY_NONE;
     uart2.Init.Parity = UART_WORD_LEN_8BITS;
     UART_Init(&uart2);
+}
+
+void pvGyroDataReading()
+{
+
+    for (;;)
+    {
+        MPU_Read_Gyro(GyroDataArr);
+        vTaskDelay(pdMS_TO_TICKS(500));
+    }
+}
+
+void pvAccelDataReading()
+{
+
+    for (;;)
+    {
+        MPU_Read_Accel(AccelDataArr);
+        vTaskDelay(pdMS_TO_TICKS(500));
+    }
+}
+
+void pvDataLogging()
+{
+    for (;;)
+    {
+        printf("Ax: %.4f\n\rYy: %.4f\n\rAz: %.4f\n\r", AccelDataArr[0], AccelDataArr[1], AccelDataArr[2]);
+        printf("Gx: %.4f\n\rGy: %.4f\n\rGz: %.4f\n\n\r", GyroDataArr[0], GyroDataArr[1], GyroDataArr[2]);
+        vTaskDelay(pdMS_TO_TICKS(500));
+    }
+}
+
+int __io_putchar(int ch)
+{
+    UART_SendChar(USART2, ch);
+    return ch;
 }
