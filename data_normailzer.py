@@ -12,12 +12,12 @@ data_storage = {
     "Gz": []
 }
 
-final_data = list()
+final_data = ['Not Circle']
 
 # Open/Create an output .csv file and add headers
 with open('output.csv', 'a+', newline='') as csvfile:
     output = csv.writer(csvfile)
-    output.writerow(['Ax', 'Ay', 'Az', 'Gx', 'Gy', 'Gz'])  # Add appropriate headers
+    # output.writerow(['Gesture', 'Ax', 'Ay', 'Az', 'Gx', 'Gy', 'Gz'])  # Add appropriate headers
 
     # Configure and open the serial port
     try:
