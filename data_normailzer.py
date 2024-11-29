@@ -12,7 +12,7 @@ data_storage = {
     "Gz": []
 }
 
-final_data = ['Not Circle']
+final_data = ['Circle ACW']
 
 # Open/Create an output .csv file and add headers
 with open('output.csv', 'a+', newline='') as csvfile:
