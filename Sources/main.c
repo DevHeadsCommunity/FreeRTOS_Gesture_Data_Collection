@@ -112,7 +112,7 @@ void pvGyroDataReading()
     for (;;)
     {
         MPU_Read_Gyro(GyroDataArr);     // Reading Gyroscoped Data
-        vTaskDelay(pdMS_TO_TICKS(500)); // delay for 500ms
+        vTaskDelay(pdMS_TO_TICKS(10)); // delay for 500ms
     }
 }
 
@@ -122,7 +122,7 @@ void pvAccelDataReading()
     for (;;)
     {
         MPU_Read_Accel(AccelDataArr);   // Reading Accelerometer Data
-        vTaskDelay(pdMS_TO_TICKS(500)); // delay for 500ms
+        vTaskDelay(pdMS_TO_TICKS(10)); // delay for 500ms
     }
 }
 
@@ -130,13 +130,14 @@ void pvDataLogging()
 {
     for (;;)
     {
-        printf("Ax: %.4f\n\rYy: %.4f\n\rAz: %.4f\n\r", AccelDataArr[0], AccelDataArr[1], AccelDataArr[2]); // Log Accelerometer Data
-        printf("Gx: %.4f\n\rGy: %.4f\n\rGz: %.4f\n\n\r", GyroDataArr[0], GyroDataArr[1], GyroDataArr[2]);  // Log Gyroscope Data
-        vTaskDelay(pdMS_TO_TICKS(500));                                                                    // Delay for 500ms
+        printf("%.4f %.4f %.4f %.4f %.4f %.4f\n",
+               AccelDataArr[0], AccelDataArr[1], AccelDataArr[2],
+               GyroDataArr[0], GyroDataArr[1], GyroDataArr[2]); // Log Accelerometer Data[Ax Ay Az, Gx Gy Gz]
+        vTaskDelay(pdMS_TO_TICKS(10));                         // Delay for 500ms
     }
 }
 
-int __io_putchar(int ch) //Overwriting for use printf via UART
+int __io_putchar(int ch) // Overwriting for use printf via UART
 {
     UART_SendChar(USART2, ch);
     return ch;
