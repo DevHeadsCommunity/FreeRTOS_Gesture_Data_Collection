@@ -1,4 +1,4 @@
-import serial  # Importing the PySerial module
+import serial 
 import csv
 import statistics
 
@@ -12,8 +12,10 @@ data_storage = {
     "Gz": []
 }
 
+final_data = list()
+
 # Open/Create an output .csv file and add headers
-with open('output.csv', 'w', newline='') as csvfile:
+with open('output.csv', 'a+', newline='') as csvfile:
     output = csv.writer(csvfile)
     output.writerow(['Ax', 'Ay', 'Az', 'Gx', 'Gy', 'Gz'])  # Add appropriate headers
 
@@ -34,7 +36,7 @@ with open('output.csv', 'w', newline='') as csvfile:
                         float_values = [float(v) for v in values]
                         
                         # Write to CSV
-                        output.writerow(float_values)
+                        # output.writerow(float_values)
                         print(float_values)  # Optionally print to console for debugging
 
                         # Add data to storage for calculations
@@ -59,9 +61,12 @@ with open('output.csv', 'w', newline='') as csvfile:
             if values:  # Ensure there is data to calculate
                 mean = statistics.mean(values)
                 stdev = statistics.stdev(values) if len(values) > 1 else 0  # SD needs at least 2 data points
+                final_data.append(stdev/mean) # adding final calcualte data into the list so that we can write into csv 
                 print(f"{key}: Mean = {mean:.4f}, SD = {stdev:.4f}")
             else:
                 print(f"{key}: No data available.")
+        output.writerow(final_data)  #Writing Data into CSV
+        print("Data is Written into .csv")
     
     finally:
         ser.close()  # Close the serial port when done
