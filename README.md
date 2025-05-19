@@ -4,6 +4,19 @@ This project collects motion data from an MPU-6050 sensor using an STM32 microco
 
 ---
 
+## 📑 Table of Contents
+- [Features](#features)
+- [Hardware Requirements](#hardware-requirements)
+- [Software Requirements](#software-requirements)
+- [Getting Started](#getting-started)
+  - [Hardware Setup](#1-hardware-setup)
+  - [FreeRTOS Task Overview](#2-freertos-task-overview)
+- [Workflow](#workflow)
+- [Example Output](#example-output)
+- [References](#references)
+
+---
+
 ## **Features**
 - **Real-Time Data Acquisition**: Captures accelerometer and gyroscope data from the MPU-6050.
 - **Task Scheduling with FreeRTOS**:
