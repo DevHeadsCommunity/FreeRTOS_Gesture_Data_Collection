@@ -4,7 +4,7 @@ This project collects motion data from an MPU-6050 sensor using an STM32 microco
 
 ---
 
-## 📑 Table of Contents
+##  Table of Contents
 - [Features](#features)
 - [Hardware Requirements](#hardware-requirements)
 - [Software Requirements](#software-requirements)
